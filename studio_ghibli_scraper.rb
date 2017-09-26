@@ -3,6 +3,9 @@ class StudioGhibliScraper
   require 'open-uri'
   require 'json'
 
+  # I Would love to learn more about executing faster code on API calls, as well as best practices. 
+  # I've always been fascinated with API consumption and API production.
+
   def print_human_names_to_console
     people = JSON.parse(open("https://ghibliapi.herokuapp.com/people/").read)
     puts "Here are all the 'Ghibli People' that are Human:"
