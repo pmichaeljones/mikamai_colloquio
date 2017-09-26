@@ -3,7 +3,7 @@ class StudioGhibliScraper
   require 'open-uri'
   require 'json'
 
-  # I Would love to learn more about executing faster code on API calls, as well as best practices. 
+  # I would love to learn more about executing faster code on API calls, as well as best practices. 
   # I've always been fascinated with API consumption and API production.
 
   def print_human_names_to_console
@@ -37,27 +37,47 @@ class StudioGhibliScraper
 end
 
 class Timer
-  def self.execution_speed
+  def self.execution_speed(name)
     time_1 = Time.now
     yield
     time_2 = Time.now
     execution_speed = time_2 - time_1
     puts "---"
-    puts "The above scrape was completed in #{execution_speed} seconds."
+    puts "#{name}: Completed in #{execution_speed} seconds."
     puts ""
+    execution_speed
   end
 end
 
+puts "Starting CURL to set a benchmark speed..."
+
+timer1 = Timer.execution_speed("Curl") do 
+  system "curl 'https://ghibliapi.herokuapp.com/people/'"
+end
+
+puts "---"
+
 scraper = StudioGhibliScraper.new
 
-Timer.execution_speed do 
+timer2 = Timer.execution_speed("Printing to console") do 
   scraper.print_human_names_to_console
 end
 
-Timer.execution_speed do 
+timer3 = Timer.execution_speed("Returning human name array") do 
   scraper.return_human_names_in_array
 end
 
-Timer.execution_speed do 
+timer4 = Timer.execution_speed("Returning full data hashes") do 
   scraper.return_array_of_human_hashes
 end
+
+puts %Q{
+Here's the Execution Speed Outcome:
+Curl: #{timer1}
+Printing to Console: #{timer2}
+Returning Names Array: #{timer3}
+Returning Full Data Hash: #{timer4}
+
+}
+
+
