@@ -75,14 +75,14 @@ describe API::OrdersController do
 
     before { authenticate_user }
 
-    it "should set authentication string" do 
+    it "should set authorization string" do 
       session["Authorization"] = nil 
       get '/api/orders/2'
       expect(request.session["Authorization"]).to be_a_kind_of(String)
       expect(response.status).to eq(404)
     end
 
-    it "should return a 404 an unauthenticated users" do
+    it "should return a 404 an unauthorized users" do
       session["Authorization"] = nil 
       get '/api/orders/2'
       expect(response.status).to eq(404)
